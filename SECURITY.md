@@ -1,7 +1,7 @@
 # Security Policies and Procedures
 
 This document outlines security procedures and general policies for the
-`<project name>` project.
+`Verizon AI Burp Extensions` project.
 
 - [Reporting a Bug](#reporting-a-bug)
 - [Disclosure Policy](#disclosure-policy)
@@ -9,12 +9,12 @@ This document outlines security procedures and general policies for the
 
 ## Reporting a Bug
 
-The `<project name>` team and community take all security bugs in
-`<project name>` seriously.  Thank you for improving the security of
-`<project name>`. We appreciate your efforts and responsible disclosure and
+The `Verizon` team and community take all security bugs in
+`Verizon AI Burp Extensions` seriously.  Thank you for improving the security of
+`Verizon AI Burp Extensions`. We appreciate your efforts and responsible disclosure and
 will make every effort to acknowledge your contributions.
 
-Report security bugs by emailing `OpenSource@wayfair.com`.
+Report security bugs by emailing `will do this as well`.
 
 The lead maintainer will acknowledge your email within 48 hours, and will send a
 more detailed response within 48 hours indicating the next steps in handling
