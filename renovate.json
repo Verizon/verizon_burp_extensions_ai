@@ -1,0 +1,7 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Wayfair OSPO recommended presets (https://github.com/wayfair/ospo-automation/blob/main/default.json)",
+  "extends": [
+    "github>wayfair/ospo-automation"
+  ]
+}

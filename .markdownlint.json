@@ -1,0 +1,16 @@
+{
+    "default": true,
+    "MD013": {
+        "line_length": 10000,
+        "headings": false,
+        "code_blocks": false,
+        "tables": false
+    },
+    "MD024": {
+        "siblings_only": true
+    },
+    "MD025": {
+        "front_matter_title": ""
+    },
+    "MD041": false
+}
