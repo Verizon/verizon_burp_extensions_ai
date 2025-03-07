@@ -3,6 +3,9 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Verizon-red)](https://verizon.github.io)
 
+<img src="assets/Verizon_Logo_2025.png" alt="Verizon AI Red Team Banner" style="margin-left: 100;" width="400">
+
+
 ## Table of Contents
 - [About The Project](#about-the-project)
 - [Extensions Included](#extensions-included)
