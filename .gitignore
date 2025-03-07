@@ -1,0 +1,133 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+dist/
+build/
+develop-eggs/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environment
+venv/
+.venv/
+ENV/
+.env/
+env.bak/
+
+# Flask specific
+instance/
+*.log
+*.db
+*.sqlite3
+
+# pipenv
+Pipfile
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# dotenv
+.env
+*.env
+
+# mypy
+.mypy_cache/
+.dmypy.json
+
+# Pyre
+.pyre/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+*.iml
+workspace.xml
+*.ipr
+*.iws
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Spyder project settings
+.spyderproject
+.spyderworkspace
+
+# Sublime Text
+*.sublime-workspace
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Logs
+logs/
+*.log
+*.out
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+
+# pytest
+.pytest_cache/
+
+# Profiling data
+.prof
+
+# Sphinx documentation
+_build/
+docs/_build/
+
+# Local database
+*.sqlite
+*.sqlite3
+
+# Docker
+*.dockerignore
+docker-compose.override.yml
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Kubernetes
+kubeconfig
+*.yaml
+*.yml
+
+# Ignore Python debug files
+*.pyo
+*.pyd
+
+# Ignore security secrets
+secrets.json
+config.json
+
+# Ignore compiled files
+*.class
+*.o
+*.lo
+*.la
+*.al
+*.pyc
+
+
+oidc_token.json
