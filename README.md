@@ -1,7 +1,5 @@
 # Verizon Open Source Burp Suite Extensions
 
-[![Release](https://img.shields.io/github/v/release/Verizon/open-source-burp-extensions?display_name=tag)](CHANGELOG.md)
-[![Lint](https://github.com/wayfair-incubator/oss-template/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/wayfair-incubator/oss-template/actions/workflows/lint.yml)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Verizon-red)](https://verizon.github.io)
 
