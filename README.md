@@ -2,6 +2,8 @@
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Verizon-red)](https://verizon.github.io)
+[![License](https://img.shields.io/badge/license-MIT-blue)]([https://opensource.org/licenses/Apache-2.0](https://opensource.org/license/mit))
+[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)]()
 
 <img src="assets/Verizon_Logo_2025.png" alt="Verizon AI Red Team Banner" style="margin-left: 100;" width="400">
 
