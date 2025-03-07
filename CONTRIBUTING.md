@@ -1,6 +1,6 @@
 # How to Contribute
 
-Thanks for your interest in contributing to `<project name>`! Here are a few general guidelines on contributing and
+Thanks for your interest in contributing to the Verizon AI Burp Extensions! Here are a few general guidelines on contributing and
 reporting bugs that we ask you to review. Following these guidelines helps to communicate that you respect the time of
 the contributors managing and developing this open source project. In return, they should reciprocate that respect in
 addressing your issue, assessing changes, and helping you finalize your pull requests. In that spirit of mutual respect,
