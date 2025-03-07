@@ -3,6 +3,28 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Verizon-red)](https://verizon.github.io)
 
+## Table of Contents
+- [About The Project](#about-the-project)
+- [Extensions Included](#extensions-included)
+- [Features](#features)
+  - [Common Features](#common-features)
+  - [Specific Features](#specific-features)
+    - [Prompt Augmenter Payload Processor](#prompt-augmenter-payload-processor)
+    - [Automated Conversations](#automated-conversations)
+    - [Bulk Analyze HTTP Transactions](#bulk-analyze-http-transactions)
+    - [Analyze and Score](#analyze-and-score)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the Backend API](#running-the-backend-api)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Credits](#credits)
+- [Acknowledgements](#acknowledgements)
+
 ## About The Project
 
 This repository contains a suite of Burp Suite extensions developed in Jython, designed to enhance the capabilities of penetration testers and security researchers when interacting with AI applications and performing prompt-based security testing. The extensions are supported by a backend API for processing, augmentation, and analysis tasks.
