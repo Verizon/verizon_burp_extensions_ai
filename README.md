@@ -1,43 +1,57 @@
-# Open Source Project Template
+# Verizon Open Source Burp Suite Extensions
 
-[![Release](https://img.shields.io/github/v/release/wayfair-incubator/oss-template?display_name=tag)](CHANGELOG.md)
-[![Lint](https://github.com/wayfair-incubator/oss-template/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/wayfair-incubator/oss-template/actions/workflows/lint.yml)
+[![Release](https://img.shields.io/github/v/release/Verizon/open-source-burp-extensions?display_name=tag)](CHANGELOG.md)
+[![Lint](https://github.com/Verizon/open-source-burp-extensions/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/Verizon/open-source-burp-extensions/actions/workflows/lint.yml)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Verizon-red)](https://verizon.github.io)
 
-## Before You Start
-
-As much as possible, we have tried to provide enough tooling to get you up and running quickly and with a minimum of effort. This includes sane defaults for documentation; templates for bug reports, feature requests, and pull requests; and [GitHub Actions](https://github.com/features/actions) that will automatically manage stale issues and pull requests. This latter defaults to labeling issues and pull requests as stale after 60 days of inactivity, and closing them after 7 additional days of inactivity. These [defaults](.github/workflows/stale.yml) and more can be configured. For configuration options, please consult the documentation for the [stale action](https://github.com/actions/stale).
-
-In trying to keep this template as generic and reusable as possible, there are some things that were omitted out of necessity and others that need a little tweaking. Before you begin developing in earnest, there are a few changes that need to be made:
-
-- [ ] ✅ Select an appropriate license for your project. This can easily be achieved through the 'Add File' button on the GitHub UI, naming the file `LICENSE`, and selecting your desired license from the provided list.
-- [ ] Update the `<License name>` placeholder in this file to reflect the name of the license you selected above.
-- [ ] Replace `[INSERT CONTACT METHOD]` in [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) with a suitable communication channel.
-- [ ] Change references to `org_name` to the name of the org your repo belongs to (eg. `wayfair-incubator`):
-  - [ ] In [`README.md`](README.md)
-  - [ ] In [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- [ ] Change references to `repo_name` to the name of your new repo:
-  - [ ] In [`README.md`](README.md)
-  - [ ] In [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- [ ] Update the link to the contribution guidelines to point to your project:
-  - [ ] In [`.github/ISSUE_TEMPLATE/BUG_REPORT.md`](.github/ISSUE_TEMPLATE/BUG_REPORT.md)
-  - [ ] In [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md)
-- [ ] Replace the `<project name>` placeholder with the name of your project:
-  - [ ] In [`CONTRIBUTING.md`](CONTRIBUTING.md)
-  - [ ] In [`SECURITY.md`](SECURITY.md)
-- [ ] Add names and contact information for actual project maintainers to [`MAINTAINERS.md`](MAINTAINERS.md).
-- [ ] Delete the content of [`CHANGELOG.md`](CHANGELOG.md). We encourage you to [keep a changelog](https://keepachangelog.com/en/1.0.0/).
-- [ ] Configure [`renovate.json`](renovate.json) for your project's language and tooling dependencies.
-  - [ ] Note that the base `renovate.json` file included with this template inherits most of its configuration logic from Wayfair OSPO's recommended presets, hosted [here](https://github.com/wayfair/ospo-automation/blob/main/default.json). If your project does not require advanced dependency configuration, this may be sufficient for your needs.
-  - [ ] 💡 To learn more about using and configuring [Renovate](http://renovatebot.com/), check out our [wayfair.github.io](https://wayfair.github.io) article: **[Managing Project Dependencies](https://wayfair.github.io/docs/managing-dependencies/)**.
-- [ ] Replace the generic content in this file with the relevant details about your project.
-- [ ] Acknowledge that some features like [branch protection rules](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/managing-a-branch-protection-rule) are only available when the repo is `public`.
-- [ ] 🚨 Delete this section of the `README`!
-
 ## About The Project
 
-Provide some information about what the project is/does.
+This repository contains a suite of Burp Suite extensions developed in Jython, designed to enhance the capabilities of penetration testers and security researchers when interacting with AI applications and performing prompt-based security testing. The extensions are supported by a backend API for processing, augmentation, and analysis tasks.
+
+## Extensions Included
+
+1. **Prompt Augmenter Payload Processor**  
+   Generates prompt augmentations based on user requirements. Integrates with Intruder payload processor and payload generator.
+
+2. **Automated Conversations**  
+   Facilitates conversational testing with LLMs, allowing users to interact dynamically while evaluating success criteria and managing context. Supports model to model attacks.
+
+3. **Bulk Analyze HTTP Transactions**  
+   Analyzes HTTP transactions (request/response pairs) for detailed security analysis and threat detection. Chat with the built-in chatbot regarding the transactions on your screen.
+
+4. **Analyze and Score**  
+   Provides analysis, scoring, benchmarking, and export functionalities for HTTP requests and responses processed through Burp Suite.
+
+## Features
+
+### Common Features
+- **Context Menu Integration**: Right-click context menu options to send requests to each extension quickly.
+- **Custom Burp Tabs**: Each extension adds a dedicated tab to Burp Suite for interactive use.
+- **Backend API Integration**: All extensions communicate with a local backend API for processing and augmenting data.
+
+### Specific Features
+
+#### Prompt Augmenter Payload Processor
+- **Intruder Payload Processor**: Automatically augment payloads for Burp Intruder attacks.
+- **Intruder Payload Generator**: After generating a number of augments in the custom tab, send them over to Intruder to use in your attack.
+- **Custom Tab**: UI for configuring augmentation settings and submitting prompts.
+
+#### Automated Conversations
+- **Interactive Conversations**: Conduct multi-turn interactions with LLMs.
+- **Objective-Based Testing**: Set objectives and receive feedback on whether success criteria are met.
+- **Compression**: Compresses conversation history to maintain token limits.
+- **Logging**: View detailed logs of each conversation step.
+
+#### Bulk Analyze HTTP Transactions
+- **Threat Analysis**: Analyze HTTP transactions for potential threats.
+- **Detailed Results**: Display detailed analyses and threat levels for each transaction.
+- **Chat About Your Transactions**: Expand the right-hand chatbox to ask questions about one or multiple of the transactions you have loaded in the tab.
+
+#### Analyze and Score
+- **Scoring and Benchmarking**: Score requests/responses and run benchmarks to evaluate chatbot interactions.
+- **Export Functionality**: Export results in CSV, Excel, or Parquet formats.
+- **Suggested Next Moves**: Built-in buttons support querying for probable next steps in the evaluation process.
 
 ## Getting Started
 
@@ -45,37 +59,82 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-
-- npm
-
-  ```sh
-  npm install npm@latest -g
-  ```
+- **Burp Suite** (Professional or Community Edition)
+- **Python** for the backend API
+- **Access to a model** by one of these service providers: GCP, OpenAI, AzureOpenAI, Ollama
+- **Jython standalone JAR file** for running Python extensions in Burp Suite
 
 ### Installation
 
-1. Clone the repo
+1. **Clone the repo**
 
    ```sh
-   git clone https://github.com/org_name/repo_name.git
+   git clone https://github.com/Verizon/open-source-burp-extensions.git
    ```
 
-2. Install NPM packages
+2. **Set up environment variables**
+   - Replace the values in the `env.example` with your key value pairs
+   - Note: You only need to specify values for the services you want to utilize
 
-   ```sh
-   npm install
+3. **Download and import Jython standalone JAR file**:
+   - Go to the [Jython Downloads Page](https://www.jython.org/download)
+   - Download the standalone Jython .jar file (e.g., jython-standalone-2.7.4.jar)
+   - Open Burp Suite
+   - Go to the Extensions tab in Burp Suite
+   - Under the Options tab, scroll down to the Python Environment section
+   - Click Select File, and choose the jython-standalone-2.7.4.jar file you downloaded
+   - Click Apply to load the Jython environment into Burp Suite
+
+4. **Load the Extensions**:
+   - Go to **Extender** > **Extensions**
+   - Click **Add**
+   - Select each .py file and load them individually
+
+### Running the Backend API
+
+1. **Install dependencies** (recommended to use python venv):
+   
+   ```bash
+   pip install -r requirements.txt
    ```
+
+2. **Navigate to the backend API folder** in the repository:
+   ```bash
+   cd /open_source_burp_extension_suite/ai_attack_api/red_team_api
+   ```
+
+3. **Run the backend server**:
+   
+   ```bash
+   python start_server
+   ```
+
+4. The API will be available at http://localhost:8000.
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+1. **Prompt Augmenter Payload Processor**:
+   - Highlight a payload in Burp Suite
+   - Configure settings in the **Prompt Augmenter Payload Processor** tab and click **Submit**
+   - Optionally, send the prompts to Intruder to be used as Payloads
 
-_For more examples, please refer to the [Documentation](https://example.com) or the [Wiki](https://github.com/org_name/repo_name/wiki)_
+2. **Automated Conversations**:
+   - Select a request and send it to **Automated Conversations**
+   - Mark payload positions, set objectives, and start conversations
+
+3. **Bulk Analyze HTTP Transactions**:
+   - In the Proxy tab, select requests and send them to **Bulk Analyze HTTP Transactions** for analysis
+   - Use any of the buttons at the bottom to extract information from a group of HTTP requests and responses
+   - Chat with a model of your choice given a highlighted transaction or transactions from the table
+
+4. **Analyze and Score**:
+   - Send requests to **Analyze and Score**
+   - Analyze, score, and benchmark results
+   - Edit the HTTP request manually and Resend it to view results
 
 ## Roadmap
 
-See the [open issues](https://github.com/org_name/repo_name/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/Verizon/open-source-burp-extensions/issues) for a list of proposed features (and known issues).
 
 ## Contributing
 
@@ -83,13 +142,17 @@ Contributions are what make the open source community such an amazing place to l
 
 ## License
 
-Distributed under the `<License name>` License. See [LICENSE](LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
+Verizon AI Red Team
 
-Project Link: [https://github.com/org_name/repo_name](https://github.com/org_name/repo_name)
+Project Link: [https://github.com/Verizon/open-source-burp-extensions](https://github.com/Verizon/open-source-burp-extensions)
+
+## Credits
+
+- **Credit**: Verizon AI Red Team
 
 ## Acknowledgements
 
