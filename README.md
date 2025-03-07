@@ -67,7 +67,7 @@ To get a local copy up and running follow these simple steps.
 1. **Clone the repo**
 
    ```sh
-   git clone https://github.com/Verizon/open-source-burp-extensions.git
+   git clone https://github.com/Verizon/verizon_burp_extensions_ai.git
    ```
 
 2. **Set up environment variables**
@@ -98,7 +98,7 @@ To get a local copy up and running follow these simple steps.
 
 2. **Navigate to the backend API folder** in the repository:
    ```bash
-   cd /open_source_burp_extension_suite/ai_attack_api/red_team_api
+   cd /verizon_burp_extensions_ai/ai_attack_api/red_team_api
    ```
 
 3. **Run the backend server**:
@@ -132,7 +132,7 @@ To get a local copy up and running follow these simple steps.
 
 ## Roadmap
 
-See the [open issues](https://github.com/Verizon/open-source-burp-extensions/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/Verizon/verizon_burp_extensions_ai/issues) for a list of proposed features (and known issues).
 
 ## Contributing
 
@@ -146,7 +146,7 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 Verizon AI Red Team
 
-Project Link: [https://github.com/Verizon/open-source-burp-extensions](https://github.com/Verizon/open-source-burp-extensions)
+Project Link: [https://github.com/Verizon/verizon_burp_extensions_ai](https://github.com/Verizon/verizon_burp_extensions_ai)
 
 ## Credits
 
