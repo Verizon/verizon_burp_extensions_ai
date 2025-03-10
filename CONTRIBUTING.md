@@ -9,10 +9,9 @@ All contributors are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md
 - [Getting Started](#getting-started)
 - [Reporting Issues](#reporting-issues)
 - [Pull Request Process](#pull-request-process)
-- [Development Workflow](#development-workflow)
+- [Branching Strategy](#branching-strategy)
 - [Security Vulnerabilities](#security-vulnerabilities)
 - [Other Ways to Contribute](#other-ways-to-contribute)
-- [Communication](#communication)
 
 ## Getting Started
 
@@ -62,7 +61,7 @@ Before creating a new issue:
 
 1. **Create a Branch**
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b feat/your-feature-name
    ```
 
 2. **Make Your Changes**
@@ -78,17 +77,17 @@ Before creating a new issue:
 4. **Commit Your Changes**
    ```bash
    git add .
-   git commit -m "Descriptive message about your changes"
+   git commit -m "feat: added your feature"
    ```
 
 5. **Push to Your Fork**
    ```bash
-   git push origin feature/your-feature-name
+   git push origin feat/your-feature-name
    ```
 
 ### Submitting a Pull Request
 
-1. **Open a Pull Request** from your feature branch to the main repository's `main` branch.
+1. **Open a Pull Request** from your feature branch to the main repository's `dev` branch.
 
 2. **Complete the PR Template** with:
    - Description of changes
@@ -106,21 +105,37 @@ Before creating a new issue:
    - Required reviews must be approved
    - No conflicts with the base branch
 
-## Development Workflow
+## Branching Strategy
 
-1. **Code Standards**
-   - Follow the established code style of the project
-   - Use meaningful variable and function names
-   - Comment complex code sections
+We follow a structured Git branching strategy to ensure a clean and manageable workflow:
 
-2. **Testing**
-   - Write tests for all new features and bug fixes
-   - Ensure all tests pass locally before submitting
+1. **`dev` (Development Branch)**: This is the main development branch where active work happens.
+2. **Feature Branches (`feat/<feature-name>`)**: New features should be developed in separate branches off `dev`.
+   - Example: `feat/user-authentication`
+3. **Bug Fix Branches (`fix/<issue-name>`)**: Bug fixes should be developed in a `fix/` branch off `dev`.
+   - Example: `fix/login-bug`
+4. **Chore/Maintenance Branches (`chore/<task-name>`)**: Non-functional changes such as documentation updates.
+   - Example: `chore/update-readme`
+5. **Merging**: All feature and fix branches should be merged into `dev` through a pull request (PR). Once stable, `dev` is merged into `main`.
 
-3. **Documentation**
-   - Update README.md if adding new features
-   - Include inline code comments
-   - Update any affected documentation
+### Steps to Create and Merge a Feature Branch
+1. **Create a new feature branch from `dev`**:
+   ```sh
+   git checkout -b feat/your-feature-name origin/dev
+   git push -u origin feat/your-feature-name
+   ```
+2. **Work on your changes, commit, and push**:
+   ```sh
+   git add .
+   git commit -m "feat: added new feature"
+   git push origin feat/your-feature-name
+   ```
+3. **Open a Pull Request (PR) to merge `feat/your-feature-name` into `dev`**.
+4. **Once approved and merged, delete the branch**:
+   ```sh
+   git branch -d feat/your-feature-name  # Local
+   git push origin --delete feat/your-feature-name  # Remote
+   ```
 
 ## Security Vulnerabilities
 
@@ -148,9 +163,6 @@ We welcome these valuable contributions:
    - Review and test open pull requests
    - Add missing test cases
 
-
 ---
 
 Thank you for contributing to the Verizon AI Burp Extensions! Your efforts help make this project better for everyone.
-
-:heart:
