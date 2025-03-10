@@ -1,0 +1,11 @@
+# Assign all files in the repository to you as the owner
+* @samuelrcameron
+
+# Assign ownership of the entire repo to both users (example for future)
+#* @your-github-username @new-contributor-username
+
+# Assign backend files to a backend team (example for future)
+#backend/ @backend-team
+
+# Assign documentation files to another contributor (example for future)
+#docs/ @doc-writer
