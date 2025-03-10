@@ -116,7 +116,11 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         }
         self.fetchAllModels()
 
-        self.chatHistory = []
+        # Stores everything ever entered, for viewing in History
+        self.globalChatHistory = []
+        # Stores messages only for the current conversation passed to the LLM
+        self.sessionChatHistory = []
+
         self.initUI()
         self.stdout.println("Bulk Analyze Transactions loaded.")
 
@@ -259,7 +263,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
 
             def maybeShowPopup(self, e):
                 if e.isPopupTrigger():
-                    popup = JPopupMenu()
+                    popup = javax.swing.JPopupMenu()
                     row = table.rowAtPoint(e.getPoint())
                     if row != -1 and not table.getSelectionModel().isSelectedIndex(row):
                         table.setRowSelectionInterval(row, row)
@@ -267,7 +271,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
                     if len(selectedRows) == 0:
                         return
 
-                    mRepeater = JMenuItem("Send to Repeater")
+                    mRepeater = javax.swing.JMenuItem("Send to Repeater")
                     def doSendRepeater(ev):
                         for r in selectedRows:
                             msg = self.outer.transaction_model.getTransaction(r)
@@ -279,7 +283,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
                     mRepeater.addActionListener(doSendRepeater)
                     popup.add(mRepeater)
 
-                    mIntruder = JMenuItem("Send to Intruder")
+                    mIntruder = javax.swing.JMenuItem("Send to Intruder")
                     def doSendIntruder(ev):
                         for r in selectedRows:
                             msg = self.outer.transaction_model.getTransaction(r)
@@ -291,7 +295,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
                     mIntruder.addActionListener(doSendIntruder)
                     popup.add(mIntruder)
 
-                    mActiveScan = JMenuItem("Do Active Scan")
+                    mActiveScan = javax.swing.JMenuItem("Do Active Scan")
                     def doActiveScan(ev):
                         for r in selectedRows:
                             msg = self.outer.transaction_model.getTransaction(r)
@@ -303,7 +307,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
                     mActiveScan.addActionListener(doActiveScan)
                     popup.add(mActiveScan)
 
-                    mAddScope = JMenuItem("Add Host to Scope")
+                    mAddScope = javax.swing.JMenuItem("Add Host to Scope")
                     def doAddScope(ev):
                         for r in selectedRows:
                             msg = self.outer.transaction_model.getTransaction(r)
@@ -317,7 +321,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
                     mAddScope.addActionListener(doAddScope)
                     popup.add(mAddScope)
 
-                    mExcludeScope = JMenuItem("Exclude Host from Scope")
+                    mExcludeScope = javax.swing.JMenuItem("Exclude Host from Scope")
                     def doExcludeScope(ev):
                         for r in selectedRows:
                             msg = self.outer.transaction_model.getTransaction(r)
@@ -355,7 +359,6 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         topBar.add(self.viewHistoryButton)
         panel.add(topBar, BorderLayout.NORTH)
 
-        # Plain text for chat display
         self.chatDisplayArea = JTextArea()
         self.chatDisplayArea.setEditable(False)
         self.chatDisplayArea.setLineWrap(True)
@@ -385,10 +388,12 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         return panel
 
     def onClearChatWindow(self, event):
+        # Clear displayed text; preserve entire global history.
         self.chatDisplayArea.setText("")
+        self.sessionChatHistory = []
         JOptionPane.showMessageDialog(
             self.mainPanel,
-            "Chat window cleared (history remains in memory)."
+            "Chat window cleared (previous messages still in History)."
         )
 
     def onViewHistoryClicked(self, event):
@@ -397,7 +402,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         dialog.setLocationRelativeTo(self.mainPanel)
 
         text = ""
-        for idx, msg in enumerate(self.chatHistory):
+        for idx, msg in enumerate(self.globalChatHistory):
             role = msg["role"]
             content = msg["content"]
             text += "{} {}:\n{}\n\n".format(role.capitalize(), idx+1, content)
@@ -419,7 +424,10 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         if not prompt:
             return
 
-        self.chatHistory.append({"role": "user", "content": prompt})
+        # Record user message in both global and current session
+        self.globalChatHistory.append({"role": "user", "content": prompt})
+        self.sessionChatHistory.append({"role": "user", "content": prompt})
+
         self.chatDisplayArea.append("User: {}\n\n".format(prompt))
         self.chatPromptArea.setText("")
 
@@ -462,7 +470,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
             payload = {
                 "model_type": model_type,
                 "model_id": model_id,
-                "conversation_history": self.chatHistory,
+                "conversation_history": self.sessionChatHistory,
                 "user_prompt": userPrompt,
                 "selected_transactions": selectedTxns
             }
@@ -496,9 +504,11 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
 
                 parsed = json.loads(resp_str)
                 new_message = parsed.get("assistant_message", "")
-                updated_history = parsed.get("conversation_history", [])
 
-                self.chatHistory = updated_history
+                # Append assistant message to global and current session
+                self.sessionChatHistory.append({"role": "assistant", "content": new_message})
+                self.globalChatHistory.append({"role": "assistant", "content": new_message})
+
                 self.chatDisplayArea.append("Model: {}\n\n".format(new_message))
             else:
                 err = conn.getErrorStream()
