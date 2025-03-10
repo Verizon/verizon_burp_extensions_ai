@@ -1,10 +1,5 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
-"""
-++++++++++++++++++++++++++++
-Bulk Analyze Transactions
-++++++++++++++++++++++++++++
-"""
 
 from burp import (
     IBurpExtender, ITab, IHttpListener, IContextMenuFactory,
@@ -14,8 +9,7 @@ from java.io import PrintWriter
 from javax.swing import (
     JPanel, JSplitPane, JTable, JScrollPane, JLabel, JButton,
     JOptionPane, BoxLayout, Box, SwingConstants, JTabbedPane,
-    JTextArea, JComboBox, JDialog, SwingUtilities, JEditorPane,
-    JPopupMenu, JMenuItem, JTextField
+    JTextArea, JComboBox, JDialog, SwingUtilities, JTextField
 )
 from javax.swing.table import AbstractTableModel
 from javax.swing.border import EmptyBorder
@@ -24,11 +18,12 @@ from java.awt.event import MouseAdapter, ActionListener
 import json
 import threading
 import javax
+import re
 
 from java.net import URL
 from java.io import OutputStreamWriter, BufferedReader, InputStreamReader
 
-# -------------- Table Model remains the same --------------
+
 class TransactionTableModel(AbstractTableModel):
     def __init__(self, helpers):
         self._helpers = helpers
@@ -103,7 +98,6 @@ class RequestResponseController(IMessageEditorController):
 
 
 class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
-
     def registerExtenderCallbacks(self, callbacks):
         self._callbacks = callbacks
         self._helpers = callbacks.getHelpers()
@@ -114,29 +108,19 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         callbacks.registerContextMenuFactory(self)
         callbacks.registerHttpListener(self)
 
-        # We'll store the available providers+models from the backend
-        # ADDED GCP to the fallback
         self._allProviderModels = {
             "Azure": ["azure-gpt-3.5", "azure-gpt-4"],
             "OpenAI": ["gpt-3.5-turbo", "gpt-4"],
             "Ollama": ["ollama-7b", "ollama-phi4"],
             "GCP": ["gemini-2.0-flash-exp", "gemini-1.5-flash-002"]
         }
-
-        # Attempt to fetch from new /available_models on the backend
         self.fetchAllModels()
 
-        # Keep a conversation history for the "Chat with Gemini" feature
         self.chatHistory = []
-
         self.initUI()
         self.stdout.println("Bulk Analyze Transactions loaded.")
 
     def fetchAllModels(self):
-        """
-        Hits GET /api/v1/bulk_analyze_http_transactions_endpoint/available_models
-        expecting {"providers": {"Azure":[...],"OpenAI":[...], "Ollama":[...], "GCP":[...] }.
-        """
         url_str = "http://localhost:8000/api/v1/bulk_analyze_http_transactions_endpoint/available_models"
         self.stdout.println("[fetchAllModels] => " + url_str)
         try:
@@ -156,7 +140,6 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
                 inp.close()
                 data = json.loads(resp_str)
                 providers_dict = data.get("providers", {})
-                # Ensure we have keys for Azure/OpenAI/Ollama/GCP
                 for p in ["Azure", "OpenAI", "Ollama", "GCP"]:
                     if p not in providers_dict:
                         providers_dict[p] = []
@@ -164,10 +147,8 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
                 self.stdout.println("[fetchAllModels] Successfully updated model list from backend.")
             else:
                 self.stdout.println("[fetchAllModels] Non-2xx => fallback lists.")
-
         except Exception as e:
             self.stderr.println("[fetchAllModels] Exception => %s" % str(e))
-            # We'll just keep the fallback.
 
     def initUI(self):
         self.mainPanel = JPanel(BorderLayout())
@@ -177,35 +158,28 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         titleLabel.setBorder(EmptyBorder(5, 0, 5, 0))
         self.mainPanel.add(titleLabel, BorderLayout.NORTH)
 
-        # Model selection area
         self.modelPanel = JPanel()
         self.modelPanel.setLayout(BoxLayout(self.modelPanel, BoxLayout.X_AXIS))
         self.modelPanel.setBorder(EmptyBorder(5, 0, 5, 0))
 
         self.modelTypeLabel = JLabel("Model Provider:")
-
-        # ADDED "GCP" to the dropdown
         self.modelTypeDropdown = JComboBox(["Azure", "OpenAI", "Ollama", "GCP"])
         self.modelTypeDropdown.addActionListener(self.onModelTypeChanged)
 
         self.modelNameLabel = JLabel("Model Name:")
-
-        # Populate the modelNameDropdown with "Azure" by default (arbitrary choice)
         self.modelNameDropdown = JComboBox()
-        self.populateModelNameDropdown("Azure")  # Default on startup
+        self.populateModelNameDropdown("Azure")
 
         self.modelPanel.add(self.modelTypeLabel)
         self.modelPanel.add(self.modelTypeDropdown)
         self.modelPanel.add(self.modelNameLabel)
         self.modelPanel.add(self.modelNameDropdown)
 
-        # Transactions table
         self.transaction_model = TransactionTableModel(self._helpers)
         self.transaction_table = JTable(self.transaction_model)
         scroll_table = JScrollPane(self.transaction_table)
         self.installRightClickMenuOnTable()
 
-        # Request/Response viewer
         self.controller = RequestResponseController(self._helpers)
         self.requestViewer = self._callbacks.createMessageEditor(self.controller, False)
         self.responseViewer = self._callbacks.createMessageEditor(self.controller, False)
@@ -216,7 +190,6 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         )
         self.rr_split.setResizeWeight(0.5)
 
-        # Tabbed results
         self.resultTabs = JTabbedPane()
 
         self.securityAnalysisArea = JTextArea()
@@ -233,14 +206,12 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         self.chatbotActivityArea.setEditable(False)
         self.resultTabs.addTab("Chatbot Activity", JScrollPane(self.chatbotActivityArea))
 
-        # Vertical split => top (table + req/resp) vs bottom (tabs)
         top_split = JSplitPane(JSplitPane.VERTICAL_SPLIT, scroll_table, self.rr_split)
         top_split.setResizeWeight(0.5)
 
         self.main_vertical_split = JSplitPane(JSplitPane.VERTICAL_SPLIT, top_split, self.resultTabs)
         self.main_vertical_split.setResizeWeight(0.66)
 
-        # Buttons at bottom
         buttonPanel = JPanel()
         buttonPanel.setLayout(BoxLayout(buttonPanel, BoxLayout.X_AXIS))
         buttonPanel.setBorder(EmptyBorder(5, 0, 5, 0))
@@ -271,10 +242,8 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
             lambda e: self.updateRequestResponseView()
         )
 
-        # Chat panel
         self.chatPanel = self.createChatPanel()
 
-        # Horizontal split: left=mainPanel, right=chatPanel
         self.mainSplitPane = JSplitPane(JSplitPane.HORIZONTAL_SPLIT, self.mainPanel, self.chatPanel)
         self.mainSplitPane.setOneTouchExpandable(True)
         self.mainSplitPane.setResizeWeight(1.0)
@@ -386,9 +355,11 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         topBar.add(self.viewHistoryButton)
         panel.add(topBar, BorderLayout.NORTH)
 
-        self.chatHtml = ""
-        self.chatDisplayArea = JEditorPane("text/html", "")
+        # Plain text for chat display
+        self.chatDisplayArea = JTextArea()
         self.chatDisplayArea.setEditable(False)
+        self.chatDisplayArea.setLineWrap(True)
+        self.chatDisplayArea.setWrapStyleWord(True)
         chatScroll = JScrollPane(self.chatDisplayArea)
         panel.add(chatScroll, BorderLayout.CENTER)
 
@@ -413,12 +384,8 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         panel.add(bottomPanel, BorderLayout.SOUTH)
         return panel
 
-    def wrapHtml(self, body):
-        return "<html><body style='font-family: sans-serif;'>" + body + "</body></html>"
-
     def onClearChatWindow(self, event):
-        self.chatHtml = ""
-        self.chatDisplayArea.setText(self.wrapHtml(self.chatHtml))
+        self.chatDisplayArea.setText("")
         JOptionPane.showMessageDialog(
             self.mainPanel,
             "Chat window cleared (history remains in memory)."
@@ -429,22 +396,21 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         dialog.setSize(500, 400)
         dialog.setLocationRelativeTo(self.mainPanel)
 
-        historyHtml = ""
+        text = ""
         for idx, msg in enumerate(self.chatHistory):
             role = msg["role"]
             content = msg["content"]
-            roleHtml = "<span style='color:blue;'>{} {}:</span>".format(role.capitalize(), idx+1)
-            contentHtml = content.replace("\n", "<br/>")
-            historyHtml += "<p>{}<br/>{}</p>".format(roleHtml, contentHtml)
+            text += "{} {}:\n{}\n\n".format(role.capitalize(), idx+1, content)
 
-        if not historyHtml.strip():
-            historyHtml = "<p>(No chat history yet)</p>"
+        if not text.strip():
+            text = "(No chat history yet)\n"
 
-        historyPane = JEditorPane("text/html", "")
-        historyPane.setEditable(False)
-        historyPane.setText(self.wrapHtml(historyHtml))
-
-        scrollPane = JScrollPane(historyPane)
+        historyArea = JTextArea()
+        historyArea.setEditable(False)
+        historyArea.setText(text)
+        historyArea.setLineWrap(True)
+        historyArea.setWrapStyleWord(True)
+        scrollPane = JScrollPane(historyArea)
         dialog.add(scrollPane)
         dialog.setVisible(True)
 
@@ -454,10 +420,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
             return
 
         self.chatHistory.append({"role": "user", "content": prompt})
-        userHtml = "<p><span style='color:blue;'>User:</span> " + prompt.replace("\n", "<br/>") + "</p>"
-        self.chatHtml += userHtml
-        self.chatDisplayArea.setText(self.wrapHtml(self.chatHtml))
-
+        self.chatDisplayArea.append("User: {}\n\n".format(prompt))
         self.chatPromptArea.setText("")
 
         selected_rows = self.transaction_table.getSelectedRows()
@@ -468,7 +431,6 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
             resp = msg.getResponse()
             req_str = self._helpers.bytesToString(req) if req else "No request"
             resp_str = self._helpers.bytesToString(resp) if resp else "No response"
-
             table_index = row + 1
             selected_transactions.append({
                 "table_index": table_index,
@@ -477,13 +439,12 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
             })
 
         model_type_ui = self.modelTypeDropdown.getSelectedItem()
-        # Expand logic to handle "Azure" -> "AzureOpenAI" and "GCP" -> "GCP"
         if model_type_ui == "Azure":
             final_model_type = "AzureOpenAI"
         elif model_type_ui == "GCP":
             final_model_type = "GCP"
         else:
-            final_model_type = model_type_ui  # "OpenAI" or "Ollama"
+            final_model_type = model_type_ui
 
         model_id = self.modelNameDropdown.getSelectedItem()
 
@@ -538,11 +499,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
                 updated_history = parsed.get("conversation_history", [])
 
                 self.chatHistory = updated_history
-
-                geminiHtml = "<p><span style='color:blue;'>Model:</span> " + new_message.replace("\n","<br/>") + "</p>"
-                self.chatHtml += geminiHtml
-                self.chatDisplayArea.setText(self.wrapHtml(self.chatHtml))
-
+                self.chatDisplayArea.append("Model: {}\n\n".format(new_message))
             else:
                 err = conn.getErrorStream()
                 if err:
@@ -556,20 +513,16 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
                     raise Exception("Backend error %d: %s" % (code, err_resp))
                 else:
                     raise Exception("Backend returned code %d with no error stream" % code)
-
         except Exception as e:
             self.stderr.println("Error in chatWorker: " + str(e))
-            JOptionPane.showMessageDialog(self.mainPanel,
-                                          "Error in Chat: %s" % str(e))
+            JOptionPane.showMessageDialog(self.mainPanel, "Error in Chat: %s" % str(e))
 
     def onModelTypeChanged(self, event):
         selected_type = self.modelTypeDropdown.getSelectedItem()
         self.populateModelNameDropdown(selected_type)
 
     def populateModelNameDropdown(self, provider):
-        # Clear existing items
         self.modelNameDropdown.removeAllItems()
-        # Use self._allProviderModels
         if provider in self._allProviderModels:
             models = self._allProviderModels[provider]
         else:
@@ -579,14 +532,12 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         for m in models:
             self.modelNameDropdown.addItem(m)
 
-    # ----- ITab -----
     def getTabCaption(self):
         return "Bulk Analyze Transactions"
 
     def getUiComponent(self):
         return self.mainSplitPane
 
-    # ----- IContextMenuFactory -----
     def createMenuItems(self, invocation):
         menuItems = []
         menuItem = javax.swing.JMenuItem(
@@ -601,16 +552,13 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
         if selected:
             for msg in selected:
                 self.transaction_model.addTransaction(msg)
-            JOptionPane.showMessageDialog(self.mainPanel,
-                                          "Selected requests added. You can now run analysis.")
+            JOptionPane.showMessageDialog(self.mainPanel, "Selected requests added. You can now run analysis.")
 
-    # ----- IHttpListener stubs -----
     def processHttpMessage(self, toolFlag, messageIsRequest, messageInfo):
         pass
 
     def runSecurityAnalysis(self, event):
         model_type_ui = self.modelTypeDropdown.getSelectedItem()
-        # Convert "Azure" -> "AzureOpenAI", "GCP" -> "GCP", else pass through
         if model_type_ui == "Azure":
             final_model_type = "AzureOpenAI"
         elif model_type_ui == "GCP":
@@ -634,8 +582,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
             formatted = self.formatSecurityAnalysis(analysis_dict)
             self.securityAnalysisArea.append("\n--- Security Analysis ---\n")
             self.securityAnalysisArea.append(formatted + "\n\n")
-            JOptionPane.showMessageDialog(self.mainPanel,
-                                          "Security Analysis complete.")
+            JOptionPane.showMessageDialog(self.mainPanel, "Security Analysis complete.")
         except Exception as e:
             self.stderr.println("Error in runSecurityAnalysisWorker: " + str(e))
             JOptionPane.showMessageDialog(self.mainPanel, "Error in Security Analysis: " + str(e))
@@ -679,8 +626,7 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
             JOptionPane.showMessageDialog(self.mainPanel, "Insights complete.")
         except Exception as e:
             self.stderr.println("Error in getDetailedInsightsWorker: " + str(e))
-            JOptionPane.showMessageDialog(self.mainPanel,
-                                          "Error in Detailed Insights: " + str(e))
+            JOptionPane.showMessageDialog(self.mainPanel, "Error in Detailed Insights: " + str(e))
 
     def findChatbotActivity(self, event):
         model_type_ui = self.modelTypeDropdown.getSelectedItem()
@@ -711,13 +657,10 @@ class BurpExtender(IBurpExtender, ITab, IHttpListener, IContextMenuFactory):
             formatted = self.formatChatbotActivity(result)
             self.chatbotActivityArea.append("\n--- Chatbot Activity ---\n")
             self.chatbotActivityArea.append(formatted + "\n\n")
-
-            JOptionPane.showMessageDialog(self.mainPanel,
-                                          "Chatbot activity detection complete.")
+            JOptionPane.showMessageDialog(self.mainPanel, "Chatbot activity detection complete.")
         except Exception as e:
             self.stderr.println("Error in findChatbotActivityWorker: " + str(e))
-            JOptionPane.showMessageDialog(self.mainPanel,
-                                          "Error in chatbot activity detection: " + str(e))
+            JOptionPane.showMessageDialog(self.mainPanel, "Error in chatbot activity detection: " + str(e))
 
     def clearResults(self, event):
         selected_rows = self.transaction_table.getSelectedRows()
