@@ -5,6 +5,7 @@ Prompt Augmenter and Payload Processor
 """
 
 import json
+from datetime import datetime
 from java.awt import BorderLayout, GridBagLayout, GridBagConstraints, Insets, FlowLayout
 from javax.swing import (
     JPanel, JLabel, JTextField, JComboBox, JButton, 
@@ -175,6 +176,10 @@ class BurpExtender(IBurpExtender, ITab, IIntruderPayloadProcessor, IContextMenuF
         self.augment_type_dropdown = JComboBox(["Prompt Injection"])
         addField("Augment Type:", self.augment_type_dropdown, 7)
 
+        # Additional field to name the payload set
+        self.payload_set_name_field = JTextField(20)
+        addField("Payload Set Name:", self.payload_set_name_field, 8)
+
         mainPanel.add(input_panel, BorderLayout.NORTH)
 
         # Output area
@@ -327,10 +332,15 @@ class BurpExtender(IBurpExtender, ITab, IIntruderPayloadProcessor, IContextMenuF
                 lines = lines[1:]  # skip label
             prompts = lines[:]
 
-            generator_factory = AugmentedPromptGeneratorFactory(prompts)
+            name_input = self.payload_set_name_field.getText().strip()
+            if not name_input:
+                now_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                name_input = "prompt_list_" + now_str
+
+            generator_factory = AugmentedPromptGeneratorFactory(prompts, name_input)
             self.callbacks.registerIntruderPayloadGeneratorFactory(generator_factory)
-            print("Prompts registered to Intruder.")
-            JOptionPane.showMessageDialog(self.panel, "Prompts sent to Intruder as a custom payload set.")
+            print("Prompts registered to Intruder with name: " + name_input)
+            JOptionPane.showMessageDialog(self.panel, "Prompts sent to Intruder as a custom payload set: " + name_input)
         except Exception as e:
             print("Error sending prompts to Intruder: " + str(e))
 
@@ -396,7 +406,6 @@ class BurpExtender(IBurpExtender, ITab, IIntruderPayloadProcessor, IContextMenuF
             special_notes = self.special_notes_field.getText().strip()
             augment_type = self.augment_type_dropdown.getSelectedItem()
 
-            # Build payload
             api_payload = {
                 "column_name": "prompt",
                 "number_of_augments": 1,  
@@ -421,7 +430,6 @@ class BurpExtender(IBurpExtender, ITab, IIntruderPayloadProcessor, IContextMenuF
         except Exception as e:
             print("Error in processPayload =>", str(e))
 
-        # fallback
         return currentPayload
 
 
@@ -431,11 +439,12 @@ class BurpExtender(IBurpExtender, ITab, IIntruderPayloadProcessor, IContextMenuF
 from burp import IIntruderPayloadGeneratorFactory, IIntruderPayloadGenerator
 
 class AugmentedPromptGeneratorFactory(IIntruderPayloadGeneratorFactory):
-    def __init__(self, prompts):
+    def __init__(self, prompts, set_name="Augmented Prompt Generator"):
         self.prompts = prompts
+        self.set_name = set_name
 
     def getGeneratorName(self):
-        return "Augmented Prompt Generator"
+        return self.set_name
 
     def createNewInstance(self, attack):
         return AugmentedPromptGenerator(self.prompts)
