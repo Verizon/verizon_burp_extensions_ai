@@ -1,0 +1,8 @@
+repos:
+-   repo: local
+    hooks:
+    -   id: trufflehog-scan
+        name: Trufflehog Scan
+        entry: trufflehog --no-update filesystem --exclude-paths=.trufflehogignore
+        language: system
+        stages: [commit]
