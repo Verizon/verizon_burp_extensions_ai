@@ -49,5 +49,5 @@ Maintainers primarily communicate through:
 For security issues, please follow the process outlined in [SECURITY.md](SECURITY.md).
 
 For other questions regarding project maintenance, please contact:
-- Primary contact: [Samuel Cameron](@samuelrcameron)
+- Primary contact: [Samuel Cameron]([@samuelrcameron](https://github.com/samuelrcameron))
 - Secondary contact: [Verizon AI Red Team](mailto:verizon.ai.burp.extensions@verizon.com)
