@@ -19,17 +19,20 @@ All contributors are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md
    - Click the "Fork" button in the top-right corner of the repository page.
 
 2. **Clone Your Fork**
+
    ```bash
    git clone https://github.com/YOUR-USERNAME/verizon_burp_extensions_ai.git
    cd verizon_burp_extensions_ai
    ```
 
-3. **Set Up Upstream Remote**
+4. **Set Up Upstream Remote**
+
    ```bash
    git remote add upstream https://github.com/verizon/verizon_burp_extensions_ai.git
    ```
 
-4. **Keep Your Fork Updated**
+6. **Keep Your Fork Updated**
+
    ```bash
    git fetch upstream
    git checkout main
@@ -60,27 +63,31 @@ Before creating a new issue:
 ### Preparing Your Contribution
 
 1. **Create a Branch**
+
    ```bash
    git checkout -b feat/your-feature-name
    ```
 
-2. **Make Your Changes**
+3. **Make Your Changes**
    - Follow the project's coding standards
    - Include tests for new features or bug fixes
    - Update documentation as needed
 
-3. **Check for Sensitive Information**
+4. **Check for Sensitive Information**
+
    ```bash
    trufflehog filesystem --exclude-paths=.trufflehogignore
    ```
 
-4. **Commit Your Changes**
+6. **Commit Your Changes**
+
    ```bash
    git add .
    git commit -m "feat: added your feature"
    ```
 
-5. **Push to Your Fork**
+8. **Push to Your Fork**
+
    ```bash
    git push origin feat/your-feature-name
    ```
@@ -120,18 +127,21 @@ We follow a structured Git branching strategy to ensure a clean and manageable w
 
 ### Steps to Create and Merge a Feature Branch
 1. **Create a new feature branch from `dev`**:
+
    ```sh
    git checkout -b feat/your-feature-name origin/dev
    git push -u origin feat/your-feature-name
    ```
-2. **Work on your changes, commit, and push**:
+3. **Work on your changes, commit, and push**:
+
    ```sh
    git add .
    git commit -m "feat: added new feature"
    git push origin feat/your-feature-name
    ```
-3. **Open a Pull Request (PR) to merge `feat/your-feature-name` into `dev`**.
-4. **Once approved and merged, delete the branch**:
+5. **Open a Pull Request (PR) to merge `feat/your-feature-name` into `dev`**.
+6. **Once approved and merged, delete the branch**:
+
    ```sh
    git branch -d feat/your-feature-name  # Local
    git push origin --delete feat/your-feature-name  # Remote
