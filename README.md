@@ -124,7 +124,7 @@ To get a local copy up and running follow these simple steps.
 ### Running the Backend API
 
 1. **Install dependencies** (recommended to use python venv):
-   
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -136,7 +136,7 @@ To get a local copy up and running follow these simple steps.
    ```
 
 4. **Run the backend server**:
-   
+
    ```bash
    python start_server
    ```
@@ -179,8 +179,7 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 ## Contact
 
 Verizon AI Red Team
-
-Project Link: [https://github.com/Verizon/verizon_burp_extensions_ai](https://github.com/Verizon/verizon_burp_extensions_ai)
+**[verizon.ai.burp.extensions@verizon.com](mailto:verizon.ai.burp.extensions@verizon.com)**
 
 ## Credits
 

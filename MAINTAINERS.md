@@ -50,3 +50,4 @@ For security issues, please follow the process outlined in [SECURITY.md](SECURIT
 
 For other questions regarding project maintenance, please contact:
 - Primary contact: [Samuel Cameron](@samuelrcameron)
+- Secondary contact: [Verizon AI Red Team](mailto:verizon.ai.burp.extensions@verizon.com)
