@@ -181,7 +181,11 @@ Verizon AI Red Team
 
 ## Credits
 
-- **Credit**: Verizon AI Red Team
+- Verizon AI Red Team
+- Samuel Cameron
+- Jorge Orchilles
+- Tim Schulz
+- Heather Linn
 
 ## Acknowledgements
 
