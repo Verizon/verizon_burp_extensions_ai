@@ -1,38 +1,50 @@
-
 # Security Policies and Procedures
 
-This document outlines security procedures and general policies for the
-Verizon AI Burp Extensions project.
+This document outlines the security procedures, responsible disclosure policies, and reporting guidelines for the Verizon AI Burp Extensions project.
 
-- [Reporting a Bug](#reporting-a-bug)
-- [Disclosure Policy](#disclosure-policy)
-- [Comments on this Policy](#comments-on-this-policy)
+## Reporting a Security Vulnerability
 
-## Reporting a Bug
+We take security seriously and value the efforts of security researchers who responsibly disclose vulnerabilities to improve our project's security posture. Your contributions help ensure the security and integrity of Verizon AI Burp Extensions.
 
-The Verizon team and community take all security bugs in
-Verizon AI Burp Extensions seriously.  Thank you for improving the security of
-Verizon AI Burp Extensions. We appreciate your efforts and responsible disclosure and
-will make every effort to acknowledge your contributions.
+If you identify a security issue, please report it by emailing:
 
-The lead maintainer will acknowledge your email within 48 hours, and will send a
-more detailed response within 48 hours indicating the next steps in handling
-your report. After the initial reply to your report, the security team will
-endeavor to keep you informed of the progress towards a fix and full
-announcement, and may ask for additional information or guidance.
+**[verizon.ai.burp.extensions@verizon.com](mailto:verizon.ai.burp.extensions@verizon.com)**
 
-## Disclosure Policy
+When reporting a vulnerability, please include:
+- A clear description of the issue and its potential impact.
+- Steps to reproduce the issue.
+- Any relevant logs, code snippets, or screenshots.
 
-When the security team receives a security bug report, they will assign it to a
-primary handler. This person will coordinate the fix and release process,
-involving the following steps:
+The lead maintainer will acknowledge receipt of your report promptly and coordinate further communication within 48 hours.
 
-- Confirm the problem and determine the affected versions.
-- Audit code to find any potential similar problems.
-- Prepare fixes for all releases still under maintenance. These fixes will be
-  released as quickly as possible.
+## Vulnerability Handling Process
 
-## Comments on this Policy
+Upon receiving a security vulnerability report, our team will:
 
-If you have suggestions on how this process could be improved please submit a
-pull request.
+1. **Acknowledge receipt** of your report within 24-48 hours.
+2. Assign a primary handler responsible for verifying and addressing the issue.
+3. Confirm the vulnerability and identify affected versions.
+4. Perform a comprehensive audit to detect similar vulnerabilities.
+5. Develop and thoroughly test a fix.
+6. Prepare and distribute a security advisory detailing the vulnerability and recommended remediation.
+7. Release the fix and advisory, ensuring timely communication with the community.
+
+## Responsible Disclosure Policy
+
+We request that you follow responsible disclosure practices by not publicly sharing details of any security vulnerabilities until a fix has been made available and the security team has publicly communicated the resolution.
+
+## Recognition
+
+We appreciate your efforts in responsibly disclosing vulnerabilities. Contributors who responsibly report security issues may be publicly acknowledged in our security advisories, subject to your approval.
+
+## Questions
+
+For any questions or further clarifications regarding this security policy, please contact:
+
+**[verizon.ai.burp.extensions@verizon.com](mailto:verizon.ai.burp.extensions@verizon.com)**
+
+## Amendments and Updates
+
+This security policy is subject to periodic review and updates. Your feedback is valued—suggestions or improvements can be submitted via issues or pull requests.
+
+Thank you for contributing to the security of the Verizon AI Burp Extensions project.
