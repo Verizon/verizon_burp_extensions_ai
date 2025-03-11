@@ -74,7 +74,8 @@ Before creating a new issue:
    - Update documentation as needed
 
 4. **Check for Sensitive Information**
-
+   This is included as a pre-commit hook. However, putting here for completeness.
+   
    ```bash
    trufflehog filesystem --exclude-paths=.trufflehogignore
    ```
