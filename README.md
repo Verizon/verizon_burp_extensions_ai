@@ -1,3 +1,4 @@
+
 # Verizon Open Source Burp Suite Extensions
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
@@ -7,8 +8,8 @@
 
 <img src="assets/Verizon_GlowV.png" alt="Verizon AI Red Team Banner" style="margin-left: 100;" width="400">
 
-
 ## Table of Contents
+
 - [About The Project](#about-the-project)
 - [Extensions Included](#extensions-included)
 - [Features](#features)
@@ -51,6 +52,7 @@ This repository contains a suite of Burp Suite extensions developed in Jython, d
 ## Features
 
 ### Common Features
+
 - **Context Menu Integration**: Right-click context menu options to send requests to each extension quickly.
 - **Custom Burp Tabs**: Each extension adds a dedicated tab to Burp Suite for interactive use.
 - **Backend API Integration**: All extensions communicate with a local backend API for processing and augmenting data.
@@ -58,22 +60,26 @@ This repository contains a suite of Burp Suite extensions developed in Jython, d
 ### Specific Features
 
 #### Prompt Augmenter Payload Processor
+
 - **Intruder Payload Processor**: Automatically augment payloads for Burp Intruder attacks.
 - **Intruder Payload Generator**: After generating a number of augments in the custom tab, send them over to Intruder to use in your attack.
 - **Custom Tab**: UI for configuring augmentation settings and submitting prompts.
 
 #### Automated Conversations
+
 - **Interactive Conversations**: Conduct multi-turn interactions with LLMs.
 - **Objective-Based Testing**: Set objectives and receive feedback on whether success criteria are met.
 - **Compression**: Compresses conversation history to maintain token limits.
 - **Logging**: View detailed logs of each conversation step.
 
 #### Bulk Analyze HTTP Transactions
+
 - **Threat Analysis**: Analyze HTTP transactions for potential threats.
 - **Detailed Results**: Display detailed analyses and threat levels for each transaction.
 - **Chat About Your Transactions**: Expand the right-hand chatbox to ask questions about one or multiple of the transactions you have loaded in the tab.
 
 #### Analyze and Score
+
 - **Scoring and Benchmarking**: Score requests/responses and run benchmarks to evaluate chatbot interactions.
 - **Export Functionality**: Export results in CSV, Excel, or Parquet formats.
 - **Suggested Next Moves**: Built-in buttons support querying for probable next steps in the evaluation process.
@@ -124,17 +130,18 @@ To get a local copy up and running follow these simple steps.
    ```
 
 2. **Navigate to the backend API folder** in the repository:
+
    ```bash
    cd /verizon_burp_extensions_ai/ai_attack_api/red_team_api
    ```
 
-3. **Run the backend server**:
+4. **Run the backend server**:
    
    ```bash
    python start_server
    ```
 
-4. The API will be available at http://localhost:8000.
+5. The API will be available at http://localhost:8000.
 
 ## Usage
 
