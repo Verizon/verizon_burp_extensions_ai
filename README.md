@@ -1,5 +1,5 @@
 
-# Verizon AI Burp Suite Extensions
+# Verizon AI Burp Extensions
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Verizon-red)](https://verizon.github.io)
