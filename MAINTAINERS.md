@@ -24,7 +24,7 @@ Maintainers are expected to:
 
 The following individuals were previously maintainers of this project who have since moved on:
 
-[Tim Schulz | Head of AI Red Team](https://github.com/automate-tim)
+[Tim Schulz | Head of AI Red Team](https://github.com/automate-tim)<br>
 [Heather Linn | AI Red Team Operator](https://github.com/underneith)
 
 ## Decision Making Process
