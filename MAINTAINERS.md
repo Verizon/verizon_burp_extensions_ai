@@ -1,6 +1,6 @@
 # Maintainers
 
-This document lists the Maintainers for the Verizon AI Burp Extensions project. Maintainers are individuals who are responsible for making important decisions about the project's direction and have commit privileges to the repository.
+This document lists the Maintainers for the Verizon AI Burp Extensions (VAIBE) project. Maintainers are individuals who are responsible for making important decisions about the project's direction and have commit privileges to the repository.
 
 ## Current Maintainers
 
