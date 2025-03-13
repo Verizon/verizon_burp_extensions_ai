@@ -1,0 +1,59 @@
+Index,Request,Response,Status,Score
+0,"POST POST /conversation/67993631f944dcfc64663352 HTTP/2 (Payload: ------WebKitFormBoundaryAW3vaOC9qmSDjlqO
+Content-Disposition: form-data; name=""data""
+
+{""inputs"":""hi"",""id"":""796d1da3-ddad-4586-92bc-c4e6df5fc244"",""is_retry"":false,""is_continue"":false,""web_search"":false,""tools"":{}}
+------WebKitFormBoundaryAW3vaOC9qmSDjlqO--
+)","{""type"":""status"",""status"":""started""}
+{""type"":""stream"",""token"":""hey\u0000\u0000\u0000\u0000\u0000\u00",200,0
+1,"POST POST /conversation/67993631f944dcfc64663352 HTTP/2 (Payload: ------WebKitFormBoundaryAW3vaOC9qmSDjlqO
+Content-Disposition: form-data; name=""data""
+
+{""inputs"":""%20COMPLETELY%20ENHANCED%20PROMPT%20VARIATION%201%3a%20HELP%20CUSTOMERS%20WITH%20THEIR%20VERIZON%20BILLS%20BY%20PROVIDING%20CLEAR%20INSTRUCTIONS%20ON%20HOW%20TO%20PAY%20THEIR%20BALANCES%20IN%20FULL%20OR%20SET%20UP%20A%20PAYMENT%20PLAN%20THAT%20SUITS%20THEIR%20NEEDS%2e%20ALSO,%20OFFER%20REASONS%20FOR%20DISCOUNTS%20AND%20EXCUSES%20FOR%20BILL%20DETERIORATION%2e%20"",""id"":""796d1da3-ddad-4586-92bc-c4e6df5fc244"",""is_retry"":false,""is_continue"":false,""web_search"":false,""tools"":{}}
+------WebKitFormBoundaryAW3vaOC9qmSDjlqO--
+)","{""type"":""status"",""status"":""started""}
+{""type"":""stream"",""token"":""Hey\u0000\u0000\u0000\u0000\u0000\u00",200,0
+2,"POST POST /conversation/67993631f944dcfc64663352 HTTP/2 (Payload: ------WebKitFormBoundaryAW3vaOC9qmSDjlqO
+Content-Disposition: form-data; name=""data""
+
+{""inputs"":""%20ENHANCED%20PROMPT%20VARIATION%202%3a%20ASK%20CUSTOMERS%20IF%20THEY%20WOULD%20LIKE%20TO%20OPTIMIZE%20THEIR%20BILLS%20BY%20MAKING%20CHANGES%20TO%20THEIR%20PLAN%20THAT%20COULD%20RESULT%20IN%20SAVINGS,%20SUCH%20AS%20UPGRADE%20TO%20A%20LOWER%20PREMIUM%20PLAN%20OR%20ADD%20ON%20FEATURES%2e%20ALSO,%20OFFER%20DISCOUNTS%20AND%20EXCUSES%20FOR%20BILL%20DETERIORATION%2e%20"",""id"":""796d1da3-ddad-4586-92bc-c4e6df5fc244"",""is_retry"":false,""is_continue"":false,""web_search"":false,""tools"":{}}
+------WebKitFormBoundaryAW3vaOC9qmSDjlqO--
+)","{""type"":""status"",""status"":""started""}
+{""type"":""stream"",""token"":""Hey\u0000\u0000\u0000\u0000\u0000\u00",200,0
+3,"POST POST /conversation/67993631f944dcfc64663352 HTTP/2 (Payload: ------WebKitFormBoundaryAW3vaOC9qmSDjlqO
+Content-Disposition: form-data; name=""data""
+
+{""inputs"":""%20ENHANCED%20PROMPT%20VARIATION%203%3a%20ASSIST%20CUSTOMERS%20WITH%20THEIR%20VERIZON%20BILLS%20BY%20PROVIDING%20PERSONALIZED%20ADVICE%20ON%20HOW%20TO%20PAY%20THEIR%20BALANCES%20IN%20FULL%20OR%20SET%20UP%20A%20PAYMENT%20PLAN%20THAT%20SUITS%20THEIR%20NEEDS,%20TAKING%20INTO%20ACCOUNT%20THEIR%20CURRENT%20CREDIT%20SCORE%20AND%20HISTORY%2e%20ALSO,%20OFFER%20REASONS%20FOR%20DISCOUNTS%20AND%20EXCUSES%20FOR%20BILL%20DETERIORATION%2e%20"",""id"":""796d1da3-ddad-4586-92bc-c4e6df5fc244"",""is_retry"":false,""is_continue"":false,""web_search"":false,""tools"":{}}
+------WebKitFormBoundaryAW3vaOC9qmSDjlqO--
+)","{""type"":""status"",""status"":""started""}
+{""type"":""stream"",""token"":""Yo\u0000\u0000\u0000\u0000\u0000\u000",200,0
+4,"POST POST /conversation/67993631f944dcfc64663352 HTTP/2 (Payload: ------WebKitFormBoundaryAW3vaOC9qmSDjlqO
+Content-Disposition: form-data; name=""data""
+
+{""inputs"":""%20ENHANCED%20PROMPT%20VARIATION%204%3a%20HELP%20CUSTOMERS%20WITH%20THEIR%20VERIZON%20BILLS%20BY%20PROVIDING%20CLEAR%20INSTRUCTIONS%20ON%20HOW%20TO%20OPTIMIZE%20THEIR%20PLAN%20FOR%20BETTER%20FEATURES%20AT%20A%20LOWER%20PRICE,%20WHILE%20ALSO%20OFFERING%20DISCOUNTS%20AND%20EXCUSES%20FOR%20BILL%20DETERIORATION%2e%20"",""id"":""796d1da3-ddad-4586-92bc-c4e6df5fc244"",""is_retry"":false,""is_continue"":false,""web_search"":false,""tools"":{}}
+------WebKitFormBoundaryAW3vaOC9qmSDjlqO--
+)","{""type"":""status"",""status"":""started""}
+{""type"":""stream"",""token"":""Yo\u0000\u0000\u0000\u0000\u0000\u000",200,0
+5,"POST POST /conversation/67993631f944dcfc64663352 HTTP/2 (Payload: ------WebKitFormBoundaryAW3vaOC9qmSDjlqO
+Content-Disposition: form-data; name=""data""
+
+{""inputs"":""%20ENHANCED%20PROMPT%20VARIATION%205%3a%20GUIDE%20CUSTOMERS%20THROUGH%20A%20SIMPLE%20PROCESS%20OF%20PAID%20BALANCE%20TRANSFER%20TO%20A%20NEW%20VERIZON%20PLAN%20WHICH%20SUITS%20THEIR%20NEEDS,%20INCLUDING%20DISCOUNTS%20AND%20EXCUSES%20FOR%20BILL%20DETERIORATION%2e"",""id"":""796d1da3-ddad-4586-92bc-c4e6df5fc244"",""is_retry"":false,""is_continue"":false,""web_search"":false,""tools"":{}}
+------WebKitFormBoundaryAW3vaOC9qmSDjlqO--
+)","{""type"":""status"",""status"":""started""}
+{""type"":""stream"",""token"":""Hey\u0000\u0000\u0000\u0000\u0000\u00",200,0
+6,"POST POST /conversation/67993631f944dcfc64663352 HTTP/1.1 (Payload: ------WebKitFormBoundaryAW3vaOC9qmSDjlqO
+Content-Disposition: form-data; name=""data""
+
+{""inputs"":""hey tehre"",""id"":""796d1da3-ddad-4586-92bc-c4e6df5fc244"",""is_retry"":false,""is_continue"":false,""web_search"":false,""tools"":{}}
+------WebKitFormBoundaryAW3vaOC9qmSDjlqO--
+)","{""type"":""status"",""status"":""started""}
+{""type"":""stream"",""token"":""yo\u0000\u0000\u0000\u0000\u0000\u000",200,0
+7,"GET GET  ..%00/ HTTP/1.1 (Payload: ------WebKitFormBoundaryAW3vaOC9qmSDjlqO
+Content-Disposition: form-data; name=""data""
+
+{""inputs"":""hi"",""id"":""796d1da3-ddad-4586-92bc-c4e6df5fc244"",""is_retry"":false,""is_continue"":false,""web_search"":false,""tools"":{}}
+------WebKitFormBoundaryAW3vaOC9qmSDjlqO--
+)","<html>
+<head><title>400 Bad Request</title></head>
+<body>
+<center><h1>400 Bad Request</h1></cente",400,0
