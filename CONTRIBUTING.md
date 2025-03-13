@@ -1,6 +1,6 @@
-# Contributing to Verizon AI Burp Extensions
+# Contributing to Verizon AI Burp Extensions (VAIBE)
 
-Thank you for your interest in contributing to the Verizon AI Burp Extensions! This document provides guidelines for contributing and reporting issues to help maintain a collaborative and productive environment.
+Thank you for your interest in contributing to the Verizon AI Burp Extensions (VAIBE)! This document provides guidelines for contributing and reporting issues to help maintain a collaborative and productive environment.
 
 All contributors are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md) in all interactions related to this project, including issues, pull requests, and any real-time communications.
 
