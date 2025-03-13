@@ -1,10 +1,10 @@
 # Security Policies and Procedures
 
-This document outlines the security procedures, responsible disclosure policies, and reporting guidelines for the Verizon AI Burp Extensions project.
+This document outlines the security procedures, responsible disclosure policies, and reporting guidelines for the Verizon AI Burp Extensions (VAIBE) project.
 
 ## Reporting a Security Vulnerability
 
-We take security seriously and value the efforts of security researchers who responsibly disclose vulnerabilities to improve our project's security posture. Your contributions help ensure the security and integrity of Verizon AI Burp Extensions.
+We take security seriously and value the efforts of security researchers who responsibly disclose vulnerabilities to improve our project's security posture. Your contributions help ensure the security and integrity of Verizon AI Burp Extensions (VAIBE).
 
 If you identify a security issue, please report it by emailing:
 
