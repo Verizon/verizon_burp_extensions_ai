@@ -15,7 +15,7 @@ When reporting a vulnerability, please include:
 - Steps to reproduce the issue.
 - Any relevant logs, code snippets, or screenshots.
 
-The lead maintainer will acknowledge receipt of your report promptly and coordinate further communication within 48 hours.
+A member of the team will acknowledge receipt of your report promptly and coordinate further communication within 48 hours.
 
 ## Vulnerability Handling Process
 
