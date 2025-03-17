@@ -104,7 +104,7 @@ To get a local copy up and running follow these simple steps.
    ```
 
 2. **Set up environment variables**
-   - Replace the values in the `env.example` with your key value pairs
+   - Replace the values in the `ai_attack_api/red_team_api/env.example` with your key value pairs
    - Note: You only need to specify values for the services you want to utilize
 
 3. **Download and import Jython standalone JAR file**:
