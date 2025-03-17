@@ -21,7 +21,7 @@ A member of the team will acknowledge receipt of your report promptly and coordi
 
 Upon receiving a security vulnerability report, our team will:
 
-1. **Acknowledge receipt** of your report within 24-48 hours.
+1. **Acknowledge receipt** of your report as soon as possible, typically within 24-48 hours.
 2. Assign a primary handler responsible for verifying and addressing the issue.
 3. Confirm the vulnerability and identify affected versions.
 4. Perform a comprehensive audit to detect similar vulnerabilities.
