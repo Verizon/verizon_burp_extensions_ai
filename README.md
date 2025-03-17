@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue)]([https://opensource.org/licenses/Apache-2.0](https://opensource.org/license/mit))
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)]()
 
-<img src="assets/Verizon_GlowV.png" alt="Verizon AI Red Team Banner" style="margin-left: 100;" width="400">
+<img src="assets/VAIBE_Logo.png" alt="VAIBE Banner" style="margin-left: 100;" width="400">
 
 ## Table of Contents
 
