@@ -188,6 +188,7 @@ Verizon AI Red Team
 - Jorge Orchilles
 - Tim Schulz
 - Heather Linn
+- Executive Sponsor: Ali Jahangiri
 
 ## Acknowledgements
 
