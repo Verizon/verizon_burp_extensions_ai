@@ -1,9 +1,5 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
-"""
-Automated Conversations
-"""
-
 from burp import (IBurpExtender, ITab, IContextMenuFactory, IContextMenuInvocation)
 from java.awt import BorderLayout, Color, Dimension, GridLayout
 from javax.swing import (JPanel, JButton, JTextArea, JScrollPane, BoxLayout, JLabel,
@@ -13,7 +9,6 @@ from javax.swing.border import EmptyBorder, TitledBorder
 from java.awt.event import ActionListener
 from java.lang import Runnable, Thread
 from javax.swing import SwingUtilities
-
 import json
 import sys
 import urllib2
@@ -25,7 +20,6 @@ try:
 except:
     pass
 
-
 class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
     def registerExtenderCallbacks(self, callbacks):
         self._callbacks = callbacks
@@ -34,31 +28,24 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
 
         self._panel = JPanel(BorderLayout())
 
-        # Attempt to fetch model lists from backend on startup
         self._allProviderModels = {
-            # fallback if the backend call fails
             "Azure": ["azure-gpt-3.5", "azure-gpt-4"],
             "OpenAI": ["gpt-3.5-turbo", "gpt-4"],
             "Ollama": ["ollama-7b", "ollama-phi4"]
-            # We'll insert GCP dynamically below if we want it in fallback
         }
         self.fetchAllModels()
 
-        # Top Pane: includes top fields + request editor
         self._topPane = JPanel(BorderLayout())
 
-        # A container panel for top fields
         self._fieldsPanel = JPanel()
         self._fieldsPanel.setLayout(BoxLayout(self._fieldsPanel, BoxLayout.Y_AXIS))
 
-        # Row for the request label
         self._requestLabel = JLabel("No request selected yet.")
         requestLabelPanel = JPanel(BorderLayout())
         requestLabelPanel.add(self._requestLabel, BorderLayout.CENTER)
         requestLabelPanel.setBorder(EmptyBorder(5,5,5,5))
         self._fieldsPanel.add(requestLabelPanel)
 
-        # Objective
         self._objectivePanel = JPanel(BorderLayout())
         self._objectivePanel.setBorder(EmptyBorder(5,5,5,5))
         self._objectiveLabel = JLabel("Objective:")
@@ -67,7 +54,6 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         self._objectivePanel.add(self._objectiveField, BorderLayout.CENTER)
         self._fieldsPanel.add(self._objectivePanel)
 
-        # Special Notes
         self._notesPanel = JPanel(BorderLayout())
         self._notesPanel.setBorder(EmptyBorder(5,5,5,5))
         self._notesLabel = JLabel("Special Notes:")
@@ -76,27 +62,22 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         self._notesPanel.add(self._notesField, BorderLayout.CENTER)
         self._fieldsPanel.add(self._notesPanel)
 
-        # Now a row with two sub-panels: "Red Team" vs. "Scoring"
         self._modelsRow = JPanel(GridLayout(1,2, 10,10))
 
-        # ---- Red Team Panel
         self._redTeamPanel = JPanel()
         self._redTeamPanel.setLayout(BoxLayout(self._redTeamPanel, BoxLayout.Y_AXIS))
         self._redTeamPanel.setBorder(
             BorderFactory.createTitledBorder("Red Team Model")
         )
 
-        # Red Team Provider
         rProvPanel = JPanel(BorderLayout())
         rProvPanel.setBorder(EmptyBorder(5,5,5,5))
         rProvLabel = JLabel("Provider:")
-        # ADDED "GCP" so user can pick it for Red Team
         self._redTeamProviderDropdown = JComboBox(["Azure", "OpenAI", "Ollama", "GCP"])
         rProvPanel.add(rProvLabel, BorderLayout.WEST)
         rProvPanel.add(self._redTeamProviderDropdown, BorderLayout.CENTER)
         self._redTeamPanel.add(rProvPanel)
 
-        # Red Team Model
         rModelPanel = JPanel(BorderLayout())
         rModelPanel.setBorder(EmptyBorder(5,5,5,5))
         rModelLabel = JLabel("Model:")
@@ -105,27 +86,22 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         rModelPanel.add(self._redTeamModelDropdown, BorderLayout.CENTER)
         self._redTeamPanel.add(rModelPanel)
 
-        # Add Red Team Panel to left
         self._modelsRow.add(self._redTeamPanel)
 
-        # ---- Scoring Panel
         self._scoringPanel = JPanel()
         self._scoringPanel.setLayout(BoxLayout(self._scoringPanel, BoxLayout.Y_AXIS))
         self._scoringPanel.setBorder(
             BorderFactory.createTitledBorder("Scoring Model")
         )
 
-        # Scoring Provider
         sProvPanel = JPanel(BorderLayout())
         sProvPanel.setBorder(EmptyBorder(5,5,5,5))
         sProvLabel = JLabel("Provider:")
-        # ADDED "GCP" so user can pick it for Scoring
         self._scoringProviderDropdown = JComboBox(["Azure", "OpenAI", "Ollama", "GCP"])
         sProvPanel.add(sProvLabel, BorderLayout.WEST)
         sProvPanel.add(self._scoringProviderDropdown, BorderLayout.CENTER)
         self._scoringPanel.add(sProvPanel)
 
-        # Scoring Model
         sModelPanel = JPanel(BorderLayout())
         sModelPanel.setBorder(EmptyBorder(5,5,5,5))
         sModelLabel = JLabel("Model:")
@@ -134,20 +110,15 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         sModelPanel.add(self._scoringModelDropdown, BorderLayout.CENTER)
         self._scoringPanel.add(sModelPanel)
 
-        # Add Scoring Panel to right
         self._modelsRow.add(self._scoringPanel)
-
         self._fieldsPanel.add(self._modelsRow)
 
-        # Populate combos
         self._redTeamProviderDropdown.addActionListener(self.onRedTeamProviderChanged)
         self._scoringProviderDropdown.addActionListener(self.onScoringProviderChanged)
 
-        # Initialize them
         self.onRedTeamProviderChanged(None)
         self.onScoringProviderChanged(None)
 
-        # Max Turns
         self._maxTurnsPanel = JPanel(BorderLayout())
         self._maxTurnsPanel.setBorder(EmptyBorder(5,5,5,5))
         self._maxTurnsLabel = JLabel("Max Turns:")
@@ -156,7 +127,6 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         self._maxTurnsPanel.add(self._maxTurnsField, BorderLayout.CENTER)
         self._fieldsPanel.add(self._maxTurnsPanel)
 
-        # Buttons row
         self._buttonPanel = JPanel()
         self._buttonPanel.setLayout(BoxLayout(self._buttonPanel, BoxLayout.X_AXIS))
         self._markPositionButton = JButton("Mark Payload Position", actionPerformed=self.markPayloadPosition)
@@ -168,20 +138,16 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         self._buttonPanel.add(self._toggleLogButton)
         self._fieldsPanel.add(self._buttonPanel)
 
-        # Request editor
         self._requestEditor = self._callbacks.createMessageEditor(None, True)
         editorComponent = self._requestEditor.getComponent()
 
-        # Add fieldsPanel (NORTH) and editor (CENTER) to _topPane
         self._topPane.add(self._fieldsPanel, BorderLayout.NORTH)
         self._topPane.add(editorComponent, BorderLayout.CENTER)
 
-        # Conversation panel
         self._conversationPanel = JPanel()
         self._conversationPanel.setLayout(BoxLayout(self._conversationPanel, BoxLayout.Y_AXIS))
         self._conversationScroll = JScrollPane(self._conversationPanel)
 
-        # Split Pane: top (fields+editor) vs bottom (conversation)
         self._splitTopBottom = JSplitPane(
             JSplitPane.VERTICAL_SPLIT,
             self._topPane,
@@ -191,10 +157,8 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         self._splitTopBottom.setResizeWeight(0.5)
         self._splitTopBottom.setDividerLocation(300)
 
-        # Init logging panel
         self.initLoggingPanel()
 
-        # Another vertical split: main (above) vs. logging (below)
         self._mainSplitPane = JSplitPane(
             JSplitPane.VERTICAL_SPLIT,
             self._splitTopBottom,
@@ -217,9 +181,6 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
 
         print("\n===== Automated Conversations Extension Loaded =====\n")
 
-    # -----------------------------------------------------------
-    # UI Setup
-    # -----------------------------------------------------------
     def initLoggingPanel(self):
         self._loggingPanel = JPanel(BorderLayout())
         self._loggingLabel = JLabel("Logs:")
@@ -230,7 +191,7 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         self._loggingScrollPane = JScrollPane(self._loggingTextArea)
         self._loggingPanel.add(self._loggingLabel, BorderLayout.NORTH)
         self._loggingPanel.add(self._loggingScrollPane, BorderLayout.CENTER)
-        self._loggingPanel.setVisible(False)  # hidden by default
+        self._loggingPanel.setVisible(False)
 
     def toggleLoggingPanel(self, event):
         isVisible = self._loggingPanel.isVisible()
@@ -242,18 +203,12 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         self._panel.revalidate()
         self._panel.repaint()
 
-    # -----------------------------------------------------------
-    # Tab interface
-    # -----------------------------------------------------------
     def getTabCaption(self):
         return "Automated Conversations"
 
     def getUiComponent(self):
         return self._panel
 
-    # -----------------------------------------------------------
-    #  Fetch all providers' model lists from the backend (once)
-    # -----------------------------------------------------------
     def fetchAllModels(self):
         urlStr = "http://localhost:8000/api/v1/automated_conversations_endpoint/available_models"
         self.logMessage("Fetching all provider models => " + urlStr)
@@ -265,9 +220,7 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
             if 200 <= code < 300:
                 rawResp = resp.read()
                 data = json.loads(rawResp)
-                # data is like {"providers": {"Azure":[...],"OpenAI":[...], "Ollama":[...], "GCP":[...]}}
                 providersDict = data.get("providers", {})
-                # ensure keys exist or fallback
                 for p in ["Azure","OpenAI","Ollama","GCP"]:
                     if p not in providersDict:
                         providersDict[p] = []
@@ -275,64 +228,46 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
                 self.logMessage("Fetched model lists: %s" % str(providersDict))
             else:
                 self.logMessage("Non-2xx code => fallback in memory.")
-                # Optionally add GCP to the fallback if not present
                 if "GCP" not in self._allProviderModels:
                     self._allProviderModels["GCP"] = ["gemini-2.0-flash-exp","gemini-1.5-flash-002"]
         except Exception as e:
             tb = traceback.format_exc()
             self.logMessage("fetchAllModels Exception => %s\n%s" % (str(e), tb))
-            # fallback: add GCP key if missing
             if "GCP" not in self._allProviderModels:
                 self._allProviderModels["GCP"] = ["gemini-2.0-flash-exp","gemini-1.5-flash-002"]
 
-    # -----------------------------------------------------------
-    #  Red Team / Scoring provider changes => fill model combos
-    # -----------------------------------------------------------
     def onRedTeamProviderChanged(self, event):
         provider = self._redTeamProviderDropdown.getSelectedItem()
         self.logMessage("[onRedTeamProviderChanged] => %s" % provider)
-
-        # Clear old items
         self._redTeamModelDropdown.removeAllItems()
-
         if provider in self._allProviderModels:
             modelList = self._allProviderModels[provider]
         else:
             modelList = []
-
         if not modelList:
             modelList = ["No models found"]
-
         for m in modelList:
             self._redTeamModelDropdown.addItem(m)
 
     def onScoringProviderChanged(self, event):
         provider = self._scoringProviderDropdown.getSelectedItem()
         self.logMessage("[onScoringProviderChanged] => %s" % provider)
-
-        # Clear old items
         self._scoringModelDropdown.removeAllItems()
-
         if provider in self._allProviderModels:
             modelList = self._allProviderModels[provider]
         else:
             modelList = []
-
         if not modelList:
             modelList = ["No models found"]
-
         for m in modelList:
             self._scoringModelDropdown.addItem(m)
 
-    # -----------------------------------------------------------
-    #  Context menu
-    # -----------------------------------------------------------
     def createMenuItems(self, invocation):
         menu = []
         messages = invocation.getSelectedMessages()
         if messages and len(messages) == 1:
             sendItem = JMenuItem(
-                "Send to Automated Conversations", 
+                "Send to Automated Conversations",
                 actionPerformed=lambda x: self.handleSendToExtension(invocation)
             )
             menu.append(sendItem)
@@ -344,17 +279,12 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
             self._selectedRequestResponse = messages[0]
             self._selectedService = self._selectedRequestResponse.getHttpService()
             self._originalRequest = self._selectedRequestResponse.getRequest()
-
             analyzedRequest = self._helpers.analyzeRequest(self._selectedService, self._originalRequest)
             url = analyzedRequest.getUrl().toString()
             self._requestLabel.setText("Selected Request: " + url)
-
             self._requestEditor.setMessage(self._originalRequest, True)
             self.logMessage("Original Request:\n" + self._helpers.bytesToString(self._originalRequest))
 
-    # -----------------------------------------------------------
-    #  Mark Payload
-    # -----------------------------------------------------------
     def markPayloadPosition(self, event):
         selection = self._requestEditor.getSelectionBounds()
         if selection is None:
@@ -363,9 +293,6 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         self._payloadStart, self._payloadEnd = selection
         self.logMessage("Payload position marked: %d-%d" % (self._payloadStart, self._payloadEnd))
 
-    # -----------------------------------------------------------
-    #  Start Conversation
-    # -----------------------------------------------------------
     def startConversation(self, event):
         if self._originalRequest is None:
             self.logMessage("No request selected.")
@@ -373,7 +300,6 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         if self._payloadStart is None or self._payloadEnd is None:
             self.logMessage("No payload position selected. Use 'Mark Payload Position'.")
             return
-
         try:
             initial_payload = self._helpers.bytesToString(
                 self._originalRequest[self._payloadStart:self._payloadEnd]
@@ -381,46 +307,35 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         except Exception as e:
             self.logMessage("Error extracting initial payload: %s" % str(e))
             return
-
         objective = self._objectiveField.getText().strip()
         notes = self._notesField.getText().strip()
-
-        # RED TEAM
         red_team_provider = self._redTeamProviderDropdown.getSelectedItem()
         red_team_model_id = self._redTeamModelDropdown.getSelectedItem()
-
-        # SCORING
         scoring_provider = self._scoringProviderDropdown.getSelectedItem()
         scoring_model_id = self._scoringModelDropdown.getSelectedItem()
-
-        # Convert "Azure" => "AzureOpenAI", or keep "GCP" as "GCP"
         if red_team_provider == "Azure":
             red_team_type = "AzureOpenAI"
         elif red_team_provider == "GCP":
             red_team_type = "GCP"
         else:
             red_team_type = red_team_provider
-
         if scoring_provider == "Azure":
             scoring_type = "AzureOpenAI"
         elif scoring_provider == "GCP":
             scoring_type = "GCP"
         else:
             scoring_type = scoring_provider
-
         max_turns_str = self._maxTurnsField.getText().strip()
         try:
             max_turns = int(max_turns_str)
         except:
             max_turns = 5
-
         self.logMessage("Initial payload: '%s'" % initial_payload)
         self.logMessage("Objective: %s" % objective)
         self.logMessage("Notes: %s" % notes)
         self.logMessage("RedTeam => %s (model=%s)" % (red_team_type, red_team_model_id))
         self.logMessage("Scoring => %s (model=%s)" % (scoring_type, scoring_model_id))
         self.logMessage("Max Turns: %d" % max_turns)
-
         worker = ConversationWorker(
             requestResponse=self._selectedRequestResponse,
             service=self._selectedService,
@@ -442,9 +357,6 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         )
         Thread(worker).start()
 
-    # -----------------------------------------------------------
-    # Logging
-    # -----------------------------------------------------------
     def logMessage(self, msg):
         try:
             print("[AutomatedConversations] " + msg)
@@ -456,10 +368,6 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
         except AttributeError:
             pass
 
-
-# ----------------------------------------------------------------
-# ConversationWorker
-# ----------------------------------------------------------------
 class ConversationWorker(Runnable):
     def __init__(
         self,
@@ -481,9 +389,9 @@ class ConversationWorker(Runnable):
         self.payload_end = payload_end
         self.objective = objective
         self.special_notes = special_notes
-        self.red_team_type = red_team_type  # e.g. "OpenAI", "AzureOpenAI", "Ollama", or "GCP"
+        self.red_team_type = red_team_type
         self.red_team_model_id = red_team_model_id
-        self.scoring_type = scoring_type    # e.g. "OpenAI", "AzureOpenAI", "Ollama", or "GCP"
+        self.scoring_type = scoring_type
         self.scoring_model_id = scoring_model_id
         self.max_turns = max_turns
         self.extender = extender
@@ -509,7 +417,6 @@ class ConversationWorker(Runnable):
                 break
 
             self.maybe_compress_history()
-
             next_message = self.get_next_message_from_llm(self.conversation_history)
             if not next_message:
                 self.logMessage("No further messages from LLM. Ending conversation.")
@@ -525,7 +432,6 @@ class ConversationWorker(Runnable):
         if len(self.conversation_history) > self.compression_threshold:
             to_compress = self.conversation_history[:-2]
             c_summary = self.compress_history(to_compress)
-            # Keep last two turns separate
             last_two = self.conversation_history[-2:]
             self.conversation_history = []
             self.conversation_history.append({"compressed_summary": c_summary})
@@ -544,7 +450,6 @@ class ConversationWorker(Runnable):
         }
         json_data = json.dumps(data)
         self.logMessage("Compression => %s" % json_data)
-
         try:
             url = URL(url_str)
             conn = url.openConnection()
@@ -555,7 +460,6 @@ class ConversationWorker(Runnable):
             out.writeBytes(json_data)
             out.flush()
             out.close()
-
             code = conn.getResponseCode()
             self.logMessage("Compression code => %d" % code)
             if code == 200:
@@ -566,7 +470,6 @@ class ConversationWorker(Runnable):
                     respStr += line
                     line = br.readLine()
                 br.close()
-
                 self.logMessage("Compression response => %s" % respStr)
                 parsed = json.loads(respStr)
                 return parsed.get("compressed_summary", "")
@@ -590,7 +493,6 @@ class ConversationWorker(Runnable):
         }
         json_data = json.dumps(data)
         self.logMessage("Eval => %s" % json_data)
-
         try:
             url = URL(url_str)
             conn = url.openConnection()
@@ -601,7 +503,6 @@ class ConversationWorker(Runnable):
             out.writeBytes(json_data)
             out.flush()
             out.close()
-
             code = conn.getResponseCode()
             self.logMessage("Eval code => %d" % code)
             if code == 200:
@@ -612,7 +513,6 @@ class ConversationWorker(Runnable):
                     resp += line
                     line = br.readLine()
                 br.close()
-
                 parsed = json.loads(resp)
                 return parsed.get("success", False)
             else:
@@ -632,7 +532,6 @@ class ConversationWorker(Runnable):
         body_offset = analyzed.getBodyOffset()
         body = modified[body_offset:]
         new_len = len(body)
-
         updated = False
         for i,h in enumerate(headers):
             if h.lower().startswith("content-length:"):
@@ -641,7 +540,6 @@ class ConversationWorker(Runnable):
                 break
         if not updated:
             headers.append("Content-Length: %d" % new_len)
-
         finalReq = self.helpers.buildHttpMessage(headers, body)
         self.logMessage("Final request =>\n%s" % self.helpers.bytesToString(finalReq))
         rr = self.callbacks.makeHttpRequest(self.service, finalReq)
@@ -663,7 +561,6 @@ class ConversationWorker(Runnable):
 
         if not conversation_history:
             return None
-
         url_str = "http://localhost:8000/api/v1/automated_conversations_endpoint/"
         data = {
             "red_team_model_type": self.red_team_type,
@@ -676,7 +573,6 @@ class ConversationWorker(Runnable):
         }
         js = json.dumps(data)
         self.logMessage("get_next_message =>\n%s" % js)
-
         try:
             url = URL(url_str)
             conn = url.openConnection()
@@ -687,7 +583,6 @@ class ConversationWorker(Runnable):
             out.writeBytes(js)
             out.flush()
             out.close()
-
             code = conn.getResponseCode()
             self.logMessage("LLM response code => %d" % code)
             if code == 200:
@@ -698,7 +593,6 @@ class ConversationWorker(Runnable):
                     resp += line
                     line = br.readLine()
                 br.close()
-
                 parsed = json.loads(resp)
                 if isinstance(parsed, dict) and "response" in parsed:
                     return parsed["response"]
@@ -712,16 +606,14 @@ class ConversationWorker(Runnable):
     def addMessageBubble(self, message, sender="You"):
         panel = JPanel(BorderLayout())
         panel.setBorder(EmptyBorder(5,5,5,5))
-
         ta = JTextArea(message)
         ta.setWrapStyleWord(True)
         ta.setLineWrap(True)
         ta.setEditable(False)
         ta.setOpaque(True)
-
+        ta.setForeground(Color.BLACK)
         scroll = JScrollPane(ta)
         scroll.setPreferredSize(Dimension(600, 100))
-
         if sender == "You":
             ta.setBackground(Color(0xADD8E6))
             panel.add(scroll, BorderLayout.EAST)
